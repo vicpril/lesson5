@@ -27,17 +27,25 @@ function printOneNew($array, $index) {
     echo "<br>[$index] - $array[$index]";
 }
 
-if (!array_key_exists('id', $_GET)||$_GET['id'] == null) {      //if GET is empty
+function printInformation($array, $id) {
+    if (array_key_exists($id, $array)) {
+        printOneNew($array, $id);
+    } else {
+        printAllNews($array);
+    }
+}
+
+if (!array_key_exists('id', $_GET)) {
+    echo "<br>Введите параметр 'id' в GET-запрос";
+    exit;
+}
+if ($_GET['id'] == null) {      //if GET is empty
     header('HTTP/1.0 404 Not Found');
     echo "<h1>Error 404 Not Found</h1>";
     echo "Вы отправили пустой запрос. Пожалуйста, отправьте запрос снова.";
     exit;
 }elseif (is_numeric($_GET['id'])) {                             //if GET is numeric
-    if (array_key_exists($_GET['id'], $news_array)) {
-        printOneNew($news_array, $_GET['id']);
-    } else {
-        printAllNews($news_array);
-    }
+    printInformation($news_array, $_GET['id']);
 } else {                                                        //if GET is impossible
     header('HTTP/1.0 404 Not Found');
     echo "<h1>Error 404 Not Found</h1>";
